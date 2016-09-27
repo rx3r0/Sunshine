@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,8 +42,20 @@ public class ForecastFragment extends Fragment {
                 "Sun 6/29 - Sunny - 20/7"
         };
 
-        // Create ArrayList and add string array
-        List<String> weatherList = new ArrayList<>(Arrays.asList(dummyData));
+        // Create ArrayList and add string array with dummy data
+        List<String> weatherForecastList = new ArrayList<>(Arrays.asList(dummyData));
+
+        // Create adapter and initialise adapter with dummy data
+        // Adapter takes data from the array list and uses it to populate forecast list view
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview,
+                weatherForecastList);
+
+        // Find reference to list view
+        ListView forecastListView = (ListView) rootView.findViewById(R.id.listView_forecast);
+        forecastListView.setAdapter(adapter);
+
+        // Set adapter on list view
 
         return rootView;
     }
