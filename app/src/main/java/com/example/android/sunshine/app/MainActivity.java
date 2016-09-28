@@ -7,6 +7,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    // Log tag used for debugging purposes
+    public static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class ForecastFragment extends Fragment {
 
+    // Log tag used for debugging purposes
+    public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     public ForecastFragment() {
         // Required empty public constructor
@@ -53,9 +55,9 @@ public class ForecastFragment extends Fragment {
 
         // Find reference to list view
         ListView forecastListView = (ListView) rootView.findViewById(R.id.listView_forecast);
-        forecastListView.setAdapter(adapter);
 
         // Set adapter on list view
+        forecastListView.setAdapter(adapter);
 
         return rootView;
     }
