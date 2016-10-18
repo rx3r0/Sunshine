@@ -6,4 +6,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello! I am a fragment!</string>
+
+    <!-- TODO: Temporary refresh button for debugging purposes only.  Remove when finished. -->
+    <string name="action_refresh" translatable="false">Refresh</string>
 </resources>
