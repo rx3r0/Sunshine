@@ -2,6 +2,7 @@ package com.example.android.sunshine.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(LOG_TAG, "onCreateOptionsMenu called ...");
+
         // Inflate the menu; adds items to the menu bar if it is present
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(LOG_TAG, "onOptionsItemSelected");
+
         // Handle action bar item clicks.  The action bar will automatically handle
         // clicks on the Home/Up button, as long as the parent activity is specified in
         // the AndroidManifest.xml file.

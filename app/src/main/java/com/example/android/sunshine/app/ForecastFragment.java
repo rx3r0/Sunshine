@@ -84,12 +84,20 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d(LOG_TAG, "onCreateOptionsMenu called ...");
+
+        // Clear menu before loading fragment menu.  This is to fix a problem with duplicated
+        // refresh option menu item.
+        menu.clear();
+
         // Inflate the menu; this adds items to the bar if the bar is present
         inflater.inflate(R.menu.forecastfragment, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(LOG_TAG, "onOptionsItemSelected called ...");
+
         // Handle action bar item clicks.  The action bar will automatically handle clicks on
         // Home/Up button, if parent activity is specified in AndroidManifest.xml
         int id = item.getItemId();
@@ -103,8 +111,11 @@ public class ForecastFragment extends Fragment {
 
     private class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
 
+        private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
+
         @Override
         protected Void doInBackground(Void... voids) {
+            Log.d(LOG_TAG, "doInBackground method called ...");
             // These need to be declared outside the try/catch block so that they can be closed in
             // the finally block.  The connection and buffered stream reader will be initialised later
             // in the try block.
