@@ -1,6 +1,7 @@
 package com.example.android.sunshine.app;
 
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -84,11 +85,11 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.d(LOG_TAG, "onCreateOptionsMenu called ...");
+        Log.d(LOG_TAG, "onCreateOptionsMenu");
 
         // Clear menu before loading fragment menu.  This is to fix a problem with duplicated
         // refresh option menu item.
-        menu.clear();
+        //menu.clear();
 
         // Inflate the menu; this adds items to the bar if the bar is present
         inflater.inflate(R.menu.forecastfragment, menu);
@@ -96,26 +97,27 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(LOG_TAG, "onOptionsItemSelected called ...");
+        Log.d(LOG_TAG, "onOptionsItemSelected");
 
         // Handle action bar item clicks.  The action bar will automatically handle clicks on
         // Home/Up button, if parent activity is specified in AndroidManifest.xml
         int id = item.getItemId();
 
         if (id == R.id.action_refresh) {
+            new FetchWeatherTask().execute("spanish town, jm");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private class FetchWeatherTask extends AsyncTask<Void, Void, Void> {
+    private class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected Void doInBackground(Void... voids) {
-            Log.d(LOG_TAG, "doInBackground method called ...");
+        protected Void doInBackground(String... params) {
+            Log.d(LOG_TAG, "doInBackground method");
             // These need to be declared outside the try/catch block so that they can be closed in
             // the finally block.  The connection and buffered stream reader will be initialised later
             // in the try block.
@@ -123,23 +125,40 @@ public class ForecastFragment extends Fragment {
             BufferedReader reader = null;
 
             // Contain raw JSON response string
-            String forescastStr = null;
+            String forescastJsonStr = null;
 
             try {
                 // Construct the URL for Open Weather Map's query.
                 // Possible parameters are available at Open Weather Map's forecast API page:
                 // http://openweathermap.org/API#forecast
 
-                // The URL is too long.  For readability, break it up into smaller pieces and
-                // concatenated it.
-                final String URL_BASE = "http://api.openweathermap.org/data/2.5/forecast/daily";
-                final String LOCATION_QUERY = "?q=spanish%20town,jm";
-                final String MODE = "&mode=json";
-                final String UNITS = "&units=metric";
-                final String COUNT = "&cnt=7";
-                final String API_ID = BuildConfig.OPEN_WEATHER_MAP_API_KEY;
+                // Build URI using UriBuilder absolute URI scheme
 
-                URL url = new URL(URL_BASE + LOCATION_QUERY + MODE + UNITS + COUNT + API_ID);
+                // Open Weather Map's parameters for use in UriBuilder
+                final String URL_BASE = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                final String LOCATION_QUERY = "q";
+                final String MODE = "mode";
+                final String UNITS = "units";
+                final String COUNT = "cnt";
+                final String APP_ID = "appid";
+
+                // Values for MODE, UNITS, and COUNT parameters
+                String format = "json";
+                String units = "metric";
+                int days = 7;
+
+                Uri owmUri = Uri.parse(URL_BASE)
+                        .buildUpon()
+                        .appendQueryParameter(LOCATION_QUERY, params[0])
+                        .appendQueryParameter(MODE, format)
+                        .appendQueryParameter(UNITS, units)
+                        .appendQueryParameter(COUNT, Integer.toString(days))
+                        .appendQueryParameter(APP_ID, BuildConfig.OPEN_WEATHER_MAP_API_KEY)
+                        .build();
+
+
+                URL url = new URL(owmUri.toString());
+                Log.v(LOG_TAG, "Open Weather Map Query URL: " + url.toString());
 
                 // Create connection to Open Weather Map and open it.
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -169,17 +188,19 @@ public class ForecastFragment extends Fragment {
 
                 // If the stream was empty then there's no point in parsing.
                 if (buffer.length() == 0) {
-                    forescastStr = null;
+                    forescastJsonStr = null;
                 }
 
-                forescastStr = buffer.toString();
+                forescastJsonStr = buffer.toString();
+
+                Log.v(LOG_TAG, "Forecast JSON String: " + forescastJsonStr);
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error", e);
 
                 // If there was no data returned there is no reason it should be parsed, therefore,
                 // just return null.
-                forescastStr = null;
+                forescastJsonStr = null;
             } finally {
                 // If still connected, then disconnect.
                 if (urlConnection != null) {
