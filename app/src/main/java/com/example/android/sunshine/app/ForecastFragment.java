@@ -42,6 +42,10 @@ public class ForecastFragment extends Fragment {
     // Log tag used for debugging purposes
     public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
+    // Making the forecast adapter a member variable makes it possible to access and update it
+    // from within onPostExecute in FetchWeatherTask.
+    private ArrayAdapter<String> mForecastAdapter;
+
     public ForecastFragment() {
         // Required empty public constructor
     }
@@ -77,7 +81,7 @@ public class ForecastFragment extends Fragment {
 
         // Create adapter and initialise adapter with dummy data
         // Adapter takes data from the array list and uses it to populate forecast list view
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        mForecastAdapter = new ArrayAdapter<>(
                 getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview,
                 weatherForecastList);
 
@@ -85,7 +89,7 @@ public class ForecastFragment extends Fragment {
         ListView forecastListView = (ListView) rootView.findViewById(R.id.listView_forecast);
 
         // Set adapter on list view
-        forecastListView.setAdapter(adapter);
+        forecastListView.setAdapter(mForecastAdapter);
 
         return rootView;
     }
@@ -96,7 +100,7 @@ public class ForecastFragment extends Fragment {
 
         // Clear menu before loading fragment menu.  This is to fix a problem with duplicated
         // refresh option menu item.
-        //menu.clear();
+        menu.clear();
 
         // Inflate the menu; this adds items to the bar if the bar is present
         inflater.inflate(R.menu.forecastfragment, menu);
@@ -321,6 +325,19 @@ public class ForecastFragment extends Fragment {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] results) {
+            // If there is weather forecast data, clear previous contents of the array adapter,
+            // then add the new data
+
+            if (results != null) {
+                mForecastAdapter.clear();
+
+                // Add the forecast strings to the forecast array adapter
+                mForecastAdapter.addAll(results);
+            }
         }
     }
 
