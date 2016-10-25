@@ -9,4 +9,7 @@
 
     <!-- TODO: Temporary refresh button for debugging purposes only.  Remove when finished. -->
     <string name="action_refresh" translatable="false">Refresh</string>
+
+    <!-- DetailActivity Title -->
+    <string name="title_activity_detail">Detailed Forecast</string>
 </resources>
