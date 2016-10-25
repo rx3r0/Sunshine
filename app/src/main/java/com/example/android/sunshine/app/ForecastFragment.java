@@ -42,8 +42,9 @@ public class ForecastFragment extends Fragment {
     // Log tag used for debugging purposes
     public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
-    // Making the forecast adapter a member variable makes it possible to access and update it
-    // from within onPostExecute in FetchWeatherTask.
+    // Making the forecast list view and adapter a member variable makes it possible to access and
+    // update them from within onPostExecute in FetchWeatherTask.
+    ListView forecastListView;
     private ArrayAdapter<String> mForecastAdapter;
 
     public ForecastFragment() {
@@ -77,16 +78,16 @@ public class ForecastFragment extends Fragment {
         };
 
         // Create ArrayList and add string array with dummy data
-        List<String> weatherForecastList = new ArrayList<>(Arrays.asList(dummyData));
+        List<String> dummyForecastList = new ArrayList<>(Arrays.asList(dummyData));
 
         // Create adapter and initialise adapter with dummy data
         // Adapter takes data from the array list and uses it to populate forecast list view
         mForecastAdapter = new ArrayAdapter<>(
                 getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview,
-                weatherForecastList);
+                dummyForecastList);
 
         // Find reference to list view
-        ListView forecastListView = (ListView) rootView.findViewById(R.id.listView_forecast);
+        forecastListView = (ListView) rootView.findViewById(R.id.listView_forecast);
 
         // Set adapter on list view
         forecastListView.setAdapter(mForecastAdapter);
@@ -97,10 +98,6 @@ public class ForecastFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.d(LOG_TAG, "onCreateOptionsMenu");
-
-        // Clear menu before loading fragment menu.  This is to fix a problem with duplicated
-        // refresh option menu item.
-        menu.clear();
 
         // Inflate the menu; this adds items to the bar if the bar is present
         inflater.inflate(R.menu.forecastfragment, menu);
@@ -127,7 +124,7 @@ public class ForecastFragment extends Fragment {
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         /**
-         * Convert UNIX time to readable string.
+         * Convert UNIX time to readable formatted string.
          * @param time
          * @return
          */
@@ -137,7 +134,7 @@ public class ForecastFragment extends Fragment {
         }
 
         /**
-         * Prepare the weather high/lows fir presentation.
+         * Prepare the weather high/lows for presentation.
          * @param high
          * @param low
          * @return
@@ -207,9 +204,9 @@ public class ForecastFragment extends Fragment {
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultStrs) {
+            /*for (String s : resultStrs) {
                 Log.v(LOG_TAG, "Forecast entry: " + s);
-            }
+            }*/
             return resultStrs;
         }
 
@@ -217,8 +214,8 @@ public class ForecastFragment extends Fragment {
         protected String[] doInBackground(String... params) {
             Log.d(LOG_TAG, "doInBackground method");
             // These need to be declared outside the try/catch block so that they can be closed in
-            // the finally block.  The connection and buffered stream reader will be initialised later
-            // in the try block.
+            // the finally block.  The connection and buffered stream reader will be initialised
+            // later in the try block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
@@ -278,9 +275,9 @@ public class ForecastFragment extends Fragment {
                 String line;
 
                 while ((line = reader.readLine()) != null) {
-                    // Adding a new line to the JSON data is not necessary as it will not affect the
-                    // parsing.  However, it does make debugging a lot easier if the completed buffer
-                    // is printed.
+                    // Adding a new line to the JSON data is not necessary as it will not affect
+                    // the parsing.  However, it does make debugging a lot easier if the completed
+                    // buffer is printed.
                     buffer.append(line + "\n");
                 }
 
@@ -291,7 +288,7 @@ public class ForecastFragment extends Fragment {
 
                 forescastJsonStr = buffer.toString();
 
-                Log.v(LOG_TAG, "Forecast JSON String: " + forescastJsonStr);
+                //Log.v(LOG_TAG, "Forecast JSON String: " + forescastJsonStr);
 
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error", e);
