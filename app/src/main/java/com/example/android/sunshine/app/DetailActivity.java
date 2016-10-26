@@ -2,19 +2,28 @@ package com.example.android.sunshine.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class DetailActivity extends AppCompatActivity {
+    private final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate called ...");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
         // Add Up action to action bar
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Trying to set up action returns null?", e);
+            e.printStackTrace();
+        }
 
+        Log.d(LOG_TAG, "Attaching DetailFragment");
         // Attach Details fragment
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -25,7 +34,7 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the meny; the adds items to the action bar if it is present
+        // Inflate the menu; the adds items to the action bar if it is present
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
