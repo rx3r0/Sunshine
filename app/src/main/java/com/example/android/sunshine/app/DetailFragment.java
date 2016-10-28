@@ -32,10 +32,14 @@ public class DetailFragment extends Fragment {
 
         // Get intent and forecast data string
         Intent detailIntent = getActivity().getIntent();
-        String detail = detailIntent.getStringExtra(Intent.EXTRA_TEXT);
 
-        // Set text view to detail forecast string
-        detailTextView.setText(detail);
+        // Check if the intent has data.  If it doesn't have data, show nothing.
+        if (detailIntent != null && detailIntent.hasExtra(Intent.EXTRA_TEXT)) {
+            String detail = detailIntent.getStringExtra(Intent.EXTRA_TEXT);
+
+            // Set text view to detail forecast string
+            detailTextView.setText(detail);
+        }
 
         return rootView;
     }
