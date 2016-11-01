@@ -1,7 +1,8 @@
 package com.example.android.sunshine.app;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ public class DetailActivity extends AppCompatActivity {
         try {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Trying to set up action returns null?", e);
+            Log.e(LOG_TAG, "Trying to set up action bar returns null?", e);
             e.printStackTrace();
         }
 
@@ -47,6 +48,7 @@ public class DetailActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 

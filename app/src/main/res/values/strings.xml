@@ -12,4 +12,7 @@
 
     <!-- DetailActivity Title -->
     <string name="title_activity_detail">Detailed Forecast</string>
+
+    <!-- Settings Activity Title -->
+    <string name="title_activity_settings">Settings</string>
 </resources>
