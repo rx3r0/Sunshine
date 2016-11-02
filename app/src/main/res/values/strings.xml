@@ -1,18 +1,43 @@
 <resources>
     <string name="app_name">Sunshine</string>
 
-    <!-- Settings Menu label -->
-    <string name="action_settings">Settings</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello! I am a fragment!</string>
+
+    <!-- Menu labels -->
+    <!-- Settings Menu label -->
+    <string name="action_settings">Settings</string>
 
     <!-- TODO: Temporary refresh button for debugging purposes only.  Remove when finished. -->
     <string name="action_refresh" translatable="false">Refresh</string>
 
     <!-- DetailActivity Title -->
-    <string name="title_activity_detail">Detailed Forecast</string>
+    <string name="title_activity_detail">Weather Details</string>
 
-    <!-- Settings Activity Title -->
-    <string name="title_activity_settings">Settings</string>
+    <!-- Preferences -->
+    <!-- Location preference key [CHAR LIMIT=NONE] -->
+    <string name="pref_location_key" translatable="false">location</string>
+
+    <!-- Location preference label [CHAR LIMIT=30] -->
+    <string name="pref_location_label">Location</string>
+    
+    <!-- Location preference default location [CHAR LIMIT=NONE] -->
+    <string name="pref_location_default" translatable="false">94043</string>
+
+    <!-- Temperature units key [CHAR LIMIT=NONE] -->
+    <string name="pref_units_key" translatable="false">temp_units</string>
+
+    <!-- Temperature units label [CHAR LIMIT=30] -->
+    <string name="pref_units_label">Units</string>
+
+    <!-- Temperature units dialog title [CHAR LIMIT=30] -->
+    <string name="pref_units_title">Select temperature units</string>
+    
+    <!-- Temperature units options labels -->
+    <string name="pref_units_metric_label">Metric</string>
+    <string name="pref_units_imperial_label">Imperial</string>
+    
+    <!-- Temperature units options values -->
+    <string name="pref_units_metric" translatable="false">metric</string>
+    <string name="pref_units_imperial" translatable="false">imperial</string>
 </resources>
